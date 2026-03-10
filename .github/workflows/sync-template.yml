@@ -1,0 +1,24 @@
+name: Sync from template
+
+on:
+  schedule:
+    - cron: "0 0 * * 0" # Every Sunday at 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    if: github.repository != 'h13/gas-template'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: AndreasAugustin/actions-template-sync@8ec19a5f2721ffb81ff809aa340ddf75e6a85ea6 # v2.5.2
+        with:
+          source_repo_path: h13/gas-template
+          upstream_branch: main
+          pr_title: "chore: sync from gas-template"
+          pr_labels: template-sync
